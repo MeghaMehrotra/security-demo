@@ -32,7 +32,7 @@ public class EmployeeService implements IEmployeeService {
 	}
 
 	@Override
-	public void delete(Integer empId) {
+	public void delete(Long empId) {
 		if (empId != null) {
 			Employee emp = employeeRepo.getOne(empId);
 			employeeRepo.delete(emp);
@@ -45,9 +45,22 @@ public class EmployeeService implements IEmployeeService {
 		List<Employee> employees = new ArrayList<Employee>();
 		if (managerId != null) {
 			Manager manager = managerRepo.getOne(managerId);
-			employees = manager.getEmployees();
+			for (Employee emp : manager.getEmployees()) {
+				if (emp.getIsDeleted().equals(false)) {
+					employees.add(emp);
+				}
+			}
 		}
 		return employees;
+	}
+
+	@Override
+	public Employee getEmployee(Long employeeId) {
+		Employee emp = null;
+		if (employeeId != null) {
+			emp = employeeRepo.getOne(employeeId);
+		}
+		return emp;
 	}
 
 }

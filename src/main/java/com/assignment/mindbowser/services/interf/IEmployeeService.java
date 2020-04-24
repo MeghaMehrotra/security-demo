@@ -10,7 +10,9 @@ public interface IEmployeeService {
 
 	Employee update(Employee emp);
 
-	void delete(Integer empId);
+	void delete(Long employeeId);
 	
 	List<Employee> getAllEmployees(Long managerId);
+
+	Employee getEmployee(Long employeeId);
 }

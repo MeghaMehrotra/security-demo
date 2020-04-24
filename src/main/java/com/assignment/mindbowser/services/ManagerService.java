@@ -36,8 +36,12 @@ public class ManagerService implements IManagerService {
 
 	@Override
 	public Manager getManagerByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		return managerRepo.findByEmail(email);
+	}
+
+	@Override
+	public Manager getManager(Long id) {
+		return managerRepo.getOne(id);
 	}
 
 }

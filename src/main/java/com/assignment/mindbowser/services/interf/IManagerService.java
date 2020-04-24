@@ -11,4 +11,6 @@ public interface IManagerService {
      void delete(Long managerId);
 
 	Manager getManagerByEmail(String email);
+	
+	Manager getManager(Long id);
 }
