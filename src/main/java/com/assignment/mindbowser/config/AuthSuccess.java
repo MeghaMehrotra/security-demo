@@ -44,8 +44,11 @@ public class AuthSuccess extends SimpleUrlAuthenticationSuccessHandler {
 
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json");
-		response.setHeader("Access-Control-Allow-Origin", serverUrl);
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
+		
+		
 
 		// redirectStrategy.sendRedirect(request, response,
 		// determineTargetUrl(authentication));

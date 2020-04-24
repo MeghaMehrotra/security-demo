@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="employee")
-public class Employee implements Serializable{
+@Table(name = "employee")
+public class Employee implements Serializable {
 
 	/**
 	 * 
@@ -34,15 +34,18 @@ public class Employee implements Serializable{
 
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "dob")
 	private String dob;
-	
+
 	@Column(name = "mobile")
 	private String mobile;
-	
+
 	@Column(name = "city")
 	private String city;
+
+	@Column(name = "is_deleted", columnDefinition = "boolean default false")
+	private Boolean isDeleted = false;
 
 	/**
 	 * @return the id
@@ -155,8 +158,19 @@ public class Employee implements Serializable{
 	public void setCity(String city) {
 		this.city = city;
 	}
-	   
-	   
-	   
-	   
+
+	/**
+	 * @return the isDeleted
+	 */
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	/**
+	 * @param isDeleted the isDeleted to set
+	 */
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 }

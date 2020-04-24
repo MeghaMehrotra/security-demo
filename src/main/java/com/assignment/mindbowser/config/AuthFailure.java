@@ -39,7 +39,7 @@ public class AuthFailure extends SimpleUrlAuthenticationFailureHandler {
             AuthenticationException exception) throws IOException, ServletException {
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setHeader("Access-Control-Allow-Origin", serverUrl);
+        response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
         ObjectMapper mapper = new ObjectMapper();

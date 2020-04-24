@@ -6,35 +6,89 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.assignment.mindbowser.dto.MessageDTO;
 import com.assignment.mindbowser.entity.Employee;
+import com.assignment.mindbowser.entity.Manager;
 import com.assignment.mindbowser.services.interf.IEmployeeService;
+import com.assignment.mindbowser.services.interf.IManagerService;
 
 @RestController
 @RequestMapping("/employee")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class EmployeeController {
 
 	@Autowired
 	private IEmployeeService employeeService;
 
-	@GetMapping("/{managerId}")
-	public ResponseEntity<List<Employee>> getEmployee(@PathVariable("managerId") Long managerId) {
-		System.out.println("==========="+managerId);
+	@Autowired
+	private IManagerService managerService;
+
+	@GetMapping("/manager/{managerId}")
+	public ResponseEntity<List<Employee>> getEmployeesByManager(@PathVariable("managerId") Long managerId) {
 		List<Employee> employees = new ArrayList<Employee>();
 		employees = employeeService.getAllEmployees(managerId);
 		return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
 	}
-	
-//	@PutMapping
-//	public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
-//		
-//	}
-	
+
+	@GetMapping("/{employeeId}/manager/{managerId}")
+	public ResponseEntity<MessageDTO<Employee>> getEmployee(@PathVariable("employeeId") Long employeeId,
+			@PathVariable Long managerId) {
+		Employee employee = null;
+		if (employeeId != null) {
+			employee = employeeService.getEmployee(employeeId);
+
+		}
+		return new ResponseEntity<MessageDTO<Employee>>(
+				new MessageDTO<Employee>("Employee save success!!", employee, true), HttpStatus.OK);
+	}
+
+	@PostMapping("/{email}")
+	public ResponseEntity<MessageDTO<Employee>> saveEmployee(@RequestBody Employee employee,
+			@PathVariable("email") String email) {
+		Employee emp = null;
+		if (employee != null) {
+			emp = employeeService.save(employee);
+			Manager manager = managerService.getManagerByEmail(email);
+			manager.getEmployees().add(emp);
+			managerService.save(manager);
+		}
+		return new ResponseEntity<MessageDTO<Employee>>(new MessageDTO<Employee>("Employee save success!!", emp, true),
+				HttpStatus.CREATED);
+
+	}
+
+	@PostMapping("/update")
+	public ResponseEntity<MessageDTO<Employee>> updateEmployee(@RequestBody Employee employee) {
+		Employee emp = null;
+		if (employee != null) {
+			emp = employeeService.save(employee);
+		}
+		return new ResponseEntity<MessageDTO<Employee>>(
+				new MessageDTO<Employee>("Employee update success!!", emp, true), HttpStatus.OK);
+	}
+
+	@GetMapping("/delete/{employeeId}")
+	public ResponseEntity<Object> deleteEmployee(@PathVariable("employeeId") Long employeeId) {
+		Employee employee = null;
+		if (employeeId != null) {
+			employee = employeeService.getEmployee(employeeId);
+			employee.setIsDeleted(true);
+			employeeService.save(employee);
+			return new ResponseEntity<Object>(new MessageDTO<Object>("Employee delete success!!", null, true),
+					HttpStatus.OK);
+		}
+
+		return new ResponseEntity<Object>(new MessageDTO<Object>("Employee delete success!!", null, false),
+				HttpStatus.OK);
+	}
 
 }

@@ -11,14 +11,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -51,13 +54,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	public AuthTokenFilter authenticationJwtTokenFilter() {
+		return new AuthTokenFilter();
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/login/**", "/signup/**").permitAll()
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated().and().formLogin()
-				.usernameParameter("username").passwordParameter("password").successHandler(authSuccess)
-				.failureHandler(authFailure).authenticationDetailsSource(authenticationDetailsSource()).and().logout()
-				.and().exceptionHandling().authenticationEntryPoint(myEntryPoint).and().csrf().disable();
+
+		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(myEntryPoint).and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers("/signin/**", "/signup/**").permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.anyRequest().authenticated().and().formLogin().usernameParameter("username")
+				.passwordParameter("password").successHandler(authSuccess).failureHandler(authFailure)
+
+				.authenticationDetailsSource(authenticationDetailsSource());
+
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
 	}
 
 	private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource() {
@@ -84,20 +98,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("ram").password("ram123").roles("ADMIN");
 
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 
 	}
-	
-	
 
 	@Bean
-	public ExUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter() throws Exception {
-
-		ExUsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter = new ExUsernamePasswordAuthenticationFilter();
-		customUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-		return customUsernamePasswordAuthenticationFilter;
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 
 	@Bean
