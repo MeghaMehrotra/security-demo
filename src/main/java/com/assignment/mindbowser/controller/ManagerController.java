@@ -48,12 +48,12 @@ public class ManagerController {
 				return new ResponseEntity<MessageDTO<Manager>>(
 						new MessageDTO<>(" Manager registration success!!", manager, true), HttpStatus.CREATED);
 			}else {
-				return new ResponseEntity<MessageDTO<Manager>>(
+				return new ResponseEntity<>(
 						new MessageDTO<>("User with email alteady exists", null, false), HttpStatus.OK);
 			
 			}
 		}
-		return new ResponseEntity<MessageDTO<Manager>>(
+		return new ResponseEntity<>(
 				new MessageDTO<>(" Enter valid manager details!!", null, false), HttpStatus.OK);
 	}
 
@@ -87,8 +87,8 @@ public class ManagerController {
 			manager = managerService.getManagerByEmail(email);
 		}
 		if (manager != null) {
-			return new ResponseEntity<MessageDTO<Manager>>(
-					new MessageDTO<Manager>(" Manager Details Fetch success", manager, true), HttpStatus.OK);
+			return new ResponseEntity<>(
+					new MessageDTO<>(" Manager Details Fetch success", manager, true), HttpStatus.OK);
 
 		}
 		return new ResponseEntity<MessageDTO<Manager>>(

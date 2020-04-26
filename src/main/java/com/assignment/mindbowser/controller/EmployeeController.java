@@ -1,6 +1,5 @@
 package com.assignment.mindbowser.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class EmployeeController {
 	@GetMapping("/manager/{managerId}")
 	public ResponseEntity<List<Employee>> getEmployeesByManager(@PathVariable("managerId") Long managerId) {
 		 List<Employee> employees = employeeService.getAllEmployees(managerId);
-		return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
+		return new ResponseEntity<>(employees, HttpStatus.OK);
 	}
 
 	@GetMapping("/{employeeId}/manager/{managerId}")
@@ -45,7 +44,7 @@ public class EmployeeController {
 			employee = employeeService.getEmployee(employeeId);
 
 		}
-		return new ResponseEntity<MessageDTO<Employee>>(
+		return new ResponseEntity<>(
 				new MessageDTO<>("Employee save success!!", employee, true), HttpStatus.OK);
 	}
 
@@ -59,7 +58,7 @@ public class EmployeeController {
 			manager.getEmployees().add(emp);
 			managerService.save(manager);
 		}
-		return new ResponseEntity<MessageDTO<Employee>>(new MessageDTO<>("Employee save success!!", emp, true),
+		return new ResponseEntity<>(new MessageDTO<>("Employee save success!!", emp, true),
 				HttpStatus.CREATED);
 
 	}
@@ -70,7 +69,7 @@ public class EmployeeController {
 		if (employee != null) {
 			emp = employeeService.save(employee);
 		}
-		return new ResponseEntity<MessageDTO<Employee>>(
+		return new ResponseEntity<>(
 				new MessageDTO<>("Employee update success!!", emp, true), HttpStatus.OK);
 	}
 
@@ -81,11 +80,11 @@ public class EmployeeController {
 			employee = employeeService.getEmployee(employeeId);
 			employee.setIsDeleted(true);
 			employeeService.save(employee);
-			return new ResponseEntity<Object>(new MessageDTO<>("Employee delete success!!", null, true),
+			return new ResponseEntity<>(new MessageDTO<>("Employee delete success!!", null, true),
 					HttpStatus.OK);
 		}
 
-		return new ResponseEntity<Object>(new MessageDTO<>("Employee delete success!!", null, false),
+		return new ResponseEntity<>(new MessageDTO<>("Employee delete success!!", null, false),
 				HttpStatus.OK);
 	}
 
