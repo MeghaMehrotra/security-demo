@@ -76,8 +76,6 @@ public class ManagerController {
 			manager = managerService.getManagerByEmail(email);
 			if (manager != null)
 				return true;
-			else
-				return false;
 		}
 		throw new MindbowserMessageException("Empty Email.Please enter email", HttpStatus.OK);
 	}
