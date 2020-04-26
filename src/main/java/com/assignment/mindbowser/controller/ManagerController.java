@@ -38,27 +38,27 @@ public class ManagerController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<MessageDTO<Manager>> signup(@RequestBody Manager manager) throws MindbowserMessageException {
-		if (manager != null && !manager.getEmail().isEmpty()) {
-			if (!checkEmailExists(manager.getEmail())) {
+		if (manager != null && !manager.getUsername().isEmpty()) {
+			if (!checkEmailExists(manager.getUsername())) {
 				
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				String hashedPassword = passwordEncoder.encode(manager.getPassword());
 				manager.setPassword(hashedPassword);
 				manager = managerService.save(manager);
 				return new ResponseEntity<MessageDTO<Manager>>(
-						new MessageDTO<Manager>(" Manager registration success!!", manager, true), HttpStatus.CREATED);
+						new MessageDTO<>(" Manager registration success!!", manager, true), HttpStatus.CREATED);
 			}else {
 				return new ResponseEntity<MessageDTO<Manager>>(
-						new MessageDTO<Manager>("User with email alteady exists", null, false), HttpStatus.OK);
+						new MessageDTO<>("User with email alteady exists", null, false), HttpStatus.OK);
 			
 			}
 		}
 		return new ResponseEntity<MessageDTO<Manager>>(
-				new MessageDTO<Manager>(" Enter valid manager details!!", null, false), HttpStatus.OK);
+				new MessageDTO<>(" Enter valid manager details!!", null, false), HttpStatus.OK);
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -67,7 +67,7 @@ public class ManagerController {
 		String jwt = jwtUtils.generateJwtToken(authentication);
 
 		Manager manager = managerService.getManagerByEmail(authentication.getName());
-		return ResponseEntity.ok(new JwtResponse(jwt, manager.getId(), manager.getEmail(), manager.getFirstName()));
+		return ResponseEntity.ok(new JwtResponse(jwt, manager.getId(), manager.getUsername(), manager.getFirstName()));
 	}
 
 	public boolean checkEmailExists(String email) throws MindbowserMessageException {
@@ -94,7 +94,7 @@ public class ManagerController {
 
 		}
 		return new ResponseEntity<MessageDTO<Manager>>(
-				new MessageDTO<Manager>(" Manager not found with username", manager, false), HttpStatus.OK);
+				new MessageDTO<>(" Manager not found with username", manager, false), HttpStatus.OK);
 	}
 
 }

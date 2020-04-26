@@ -9,9 +9,9 @@ public class MessageDTO<T extends Object> implements Serializable {
 	/**
      * 
      */
-    public String responseMessage;
-    public Boolean Status = true;
-    public T body;
+    private String responseMessage;
+    private Boolean status = true;
+    private T body;
 
     /**
      * 
@@ -20,17 +20,17 @@ public class MessageDTO<T extends Object> implements Serializable {
         super();
     }
 
-    public MessageDTO(String responseMessage, boolean Status) {
+    public MessageDTO(String responseMessage, boolean status) {
         super();
         this.responseMessage = responseMessage;
-        this.Status = Status;
+        this.status = status;
     }
 
-    public MessageDTO(String responseMessage, T body, boolean Status) {
+    public MessageDTO(String responseMessage, T body, boolean status) {
         super();
         this.responseMessage = responseMessage;
         this.body = body;
-        this.Status = Status;
+        this.status = status;
     }
 
     /**

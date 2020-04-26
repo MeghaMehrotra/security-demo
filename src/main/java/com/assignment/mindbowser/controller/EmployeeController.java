@@ -34,7 +34,7 @@ public class EmployeeController {
 
 	@GetMapping("/manager/{managerId}")
 	public ResponseEntity<List<Employee>> getEmployeesByManager(@PathVariable("managerId") Long managerId) {
-		List<Employee> employees = new ArrayList<Employee>();
+		List<Employee> employees = new ArrayList<>();
 		employees = employeeService.getAllEmployees(managerId);
 		return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
 	}
@@ -48,7 +48,7 @@ public class EmployeeController {
 
 		}
 		return new ResponseEntity<MessageDTO<Employee>>(
-				new MessageDTO<Employee>("Employee save success!!", employee, true), HttpStatus.OK);
+				new MessageDTO<>("Employee save success!!", employee, true), HttpStatus.OK);
 	}
 
 	@PostMapping("/{email}")
@@ -61,7 +61,7 @@ public class EmployeeController {
 			manager.getEmployees().add(emp);
 			managerService.save(manager);
 		}
-		return new ResponseEntity<MessageDTO<Employee>>(new MessageDTO<Employee>("Employee save success!!", emp, true),
+		return new ResponseEntity<MessageDTO<Employee>>(new MessageDTO<>("Employee save success!!", emp, true),
 				HttpStatus.CREATED);
 
 	}
@@ -73,7 +73,7 @@ public class EmployeeController {
 			emp = employeeService.save(employee);
 		}
 		return new ResponseEntity<MessageDTO<Employee>>(
-				new MessageDTO<Employee>("Employee update success!!", emp, true), HttpStatus.OK);
+				new MessageDTO<>("Employee update success!!", emp, true), HttpStatus.OK);
 	}
 
 	@GetMapping("/delete/{employeeId}")
@@ -83,11 +83,11 @@ public class EmployeeController {
 			employee = employeeService.getEmployee(employeeId);
 			employee.setIsDeleted(true);
 			employeeService.save(employee);
-			return new ResponseEntity<Object>(new MessageDTO<Object>("Employee delete success!!", null, true),
+			return new ResponseEntity<Object>(new MessageDTO<>("Employee delete success!!", null, true),
 					HttpStatus.OK);
 		}
 
-		return new ResponseEntity<Object>(new MessageDTO<Object>("Employee delete success!!", null, false),
+		return new ResponseEntity<Object>(new MessageDTO<>("Employee delete success!!", null, false),
 				HttpStatus.OK);
 	}
 

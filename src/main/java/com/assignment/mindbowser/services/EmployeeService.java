@@ -42,7 +42,7 @@ public class EmployeeService implements IEmployeeService {
 
 	@Override
 	public List<Employee> getAllEmployees(Long managerId) {
-		List<Employee> employees = new ArrayList<Employee>();
+		List<Employee> employees = new ArrayList<>();
 		if (managerId != null) {
 			Manager manager = managerRepo.getOne(managerId);
 			for (Employee emp : manager.getEmployees()) {

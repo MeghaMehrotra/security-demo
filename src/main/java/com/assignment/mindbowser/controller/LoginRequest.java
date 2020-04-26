@@ -1,9 +1,5 @@
 package com.assignment.mindbowser.controller;
 
-import java.io.Serializable;
-
-import org.springframework.stereotype.Component;
-
 import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {
