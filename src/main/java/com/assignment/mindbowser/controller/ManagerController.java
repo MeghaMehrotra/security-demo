@@ -45,7 +45,7 @@ public class ManagerController {
 				String hashedPassword = passwordEncoder.encode(manager.getPassword());
 				manager.setPassword(hashedPassword);
 				manager = managerService.save(manager);
-				return new ResponseEntity<MessageDTO<Manager>>(
+				return new ResponseEntity<>(
 						new MessageDTO<>(" Manager registration success!!", manager, true), HttpStatus.CREATED);
 			}else {
 				return new ResponseEntity<>(
@@ -91,7 +91,7 @@ public class ManagerController {
 					new MessageDTO<>(" Manager Details Fetch success", manager, true), HttpStatus.OK);
 
 		}
-		return new ResponseEntity<MessageDTO<Manager>>(
+		return new ResponseEntity<>(
 				new MessageDTO<>(" Manager not found with username", manager, false), HttpStatus.OK);
 	}
 

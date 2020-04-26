@@ -1,15 +1,12 @@
 package com.assignment.mindbowser.dto;
-import java.io.Serializable;
 
-public class MessageDTO<T extends Object> implements Serializable {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class MessageDTO<T extends Object> {
+
 	/**
      * 
      */
     private String responseMessage;
+    private Boolean status;
     private T body;
 
     /**
@@ -22,12 +19,14 @@ public class MessageDTO<T extends Object> implements Serializable {
     public MessageDTO(String responseMessage, boolean status) {
         super();
         this.responseMessage = responseMessage;
+        this.status = status;
     }
 
     public MessageDTO(String responseMessage, T body, boolean status) {
         super();
         this.responseMessage = responseMessage;
         this.body = body;
+        this.status = status;
     }
 
     /**
@@ -78,4 +77,19 @@ public class MessageDTO<T extends Object> implements Serializable {
         this.body = body;
     }
 
+	/**
+	 * @return the status
+	 */
+	public Boolean getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+    
 }
