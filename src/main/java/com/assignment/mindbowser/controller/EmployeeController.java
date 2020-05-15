@@ -2,6 +2,8 @@ package com.assignment.mindbowser.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +51,7 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/{email}")
-	public ResponseEntity<MessageDTO<Employee>> saveEmployee(@RequestBody Employee employee,
+	public ResponseEntity<MessageDTO<Employee>> saveEmployee(@RequestBody @Valid Employee employee,
 			@PathVariable("email") String email) {
 		Employee emp = null;
 		if (employee != null) {

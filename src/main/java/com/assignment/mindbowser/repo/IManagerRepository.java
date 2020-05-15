@@ -8,6 +8,6 @@ import com.assignment.mindbowser.entity.Manager;
 @Repository
 public interface IManagerRepository extends JpaRepository<Manager, Long> {
 
-	Manager findByEmail(String username);
+	Manager findByUsername(String username);
 
 }

@@ -37,7 +37,7 @@ public class ManagerController {
 	IManagerService managerService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<MessageDTO<Manager>> signup(@RequestBody Manager manager) throws MindbowserMessageException {
+	public ResponseEntity<MessageDTO<Manager>> signup(@RequestBody @Valid Manager manager) throws MindbowserMessageException {
 		if (manager != null && !manager.getUsername().isEmpty()) {
 			if (!checkEmailExists(manager.getUsername())) {
 				
@@ -76,6 +76,8 @@ public class ManagerController {
 			manager = managerService.getManagerByEmail(email);
 			if (manager != null)
 				return true;
+			else
+				return false;
 		}
 		throw new MindbowserMessageException("Empty Email.Please enter email", HttpStatus.OK);
 	}

@@ -34,7 +34,10 @@ public class ManagerService implements IManagerService {
 
 	@Override
 	public Manager getManagerByEmail(String email) {
-		return managerRepo.findByEmail(email);
+		Manager m =  managerRepo.findByUsername(email);
+		System.out.println(m);
+		return m;
+		
 	}
 
 	@Override

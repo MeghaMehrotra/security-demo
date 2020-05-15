@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		Manager manager = managerRepo.findByEmail(username);
+		Manager manager = managerRepo.findByUsername(username);
 		if (manager == null) {
 			throw new UsernameNotFoundException(username);
 		}
